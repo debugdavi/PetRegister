@@ -1,0 +1,100 @@
+# =========================
+# .NET / Visual Studio
+# =========================
+
+## Build results
+bin/
+obj/
+out/
+
+## Rider / ReSharper
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## Visual Studio
+.vs/
+.vscode/
+
+## Logs
+*.log
+
+## NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+
+## Test results
+TestResults/
+coverage/
+coverage.opencover.xml
+
+## EF Core
+Migrations/*.Designer.cs
+Migrations/*.resx
+
+# =========================
+# Configurações sensíveis
+# =========================
+
+## App settings (NUNCA subir secrets)
+appsettings.json
+appsettings.*.json
+!appsettings.Development.json
+
+## Environment variables
+.env
+.env.*
+
+## Certificates
+*.pfx
+*.cer
+*.crt
+
+# =========================
+# Banco de dados
+# =========================
+
+*.mdf
+*.ldf
+*.sqlite
+*.db
+
+# =========================
+# OS / Editor
+# =========================
+
+## Windows
+Thumbs.db
+Desktop.ini
+
+## Mac
+.DS_Store
+
+## Vim
+*.swp
+
+# =========================
+# Publicação / Deploy
+# =========================
+
+publish/
+artifacts/
+
+# =========================
+# Node (caso use frontend)
+# =========================
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
+# Docker
+# =========================
+
+docker-compose.override.yml
