@@ -1,4 +1,6 @@
-﻿using PetRegister.Domain.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using PetRegister.Domain.Enums;
 
 namespace PetRegister.Domain.Entities
 {
@@ -18,7 +20,11 @@ namespace PetRegister.Domain.Entities
 
         public string Nome { get; set; } = string.Empty;
         public DateTime DataNascimento { get; set; }
+        
+        [EnumDataType(typeof(Sexo), ErrorMessage = "Selecione um sexo válido.")]
         public Sexo Sexo { get; set; }
+        
+        [Column(TypeName = "decimal(10,2)")]
         public decimal Peso { get; set; }
 
         public void AtualizarPeso(decimal novoPeso)

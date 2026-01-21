@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PetRegister.Infrastructure.Context;
+using PetRegister.Infrastructure.Repositories;
+using PetRegister.Infrastructure.Repositories.Interfaces;
 
 namespace PetRegister.Infrastructure
 {
@@ -35,7 +37,7 @@ namespace PetRegister.Infrastructure
 
             // 2. Aqui você vai registrar os Repositories futuramente
             // Exemplo:
-            // services.AddScoped<IPetRepository, PetRepository>();
+            services.AddScoped<IPetRepository, PetRepository>();
 
             // 3. Aqui você vai registrar outros serviços da infra
             // Exemplo:
