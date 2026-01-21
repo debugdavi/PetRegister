@@ -47,7 +47,8 @@ namespace PetRegister.API.Controllers
             if (pet == null)
                 return NotFound(new { message = "Pet não encontrado." });
             
-            await _cache.SetAsync(pet.Id.ToString(), JsonSerializer.Serialize(petCache));
+            await _cache.SetAsync(pet.Id.ToString(), JsonSerializer.Serialize(pet));
+            Response.Headers.Add("X-Cache-Status", "Miss");
 
             return Ok(pet);
         }
