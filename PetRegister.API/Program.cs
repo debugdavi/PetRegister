@@ -1,5 +1,8 @@
 using PetRegister.Infrastructure;
 
+// Permite o Npgsql aceitar DateTime sem especificação de Kind (UTC/Local)
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add repositories/dbcontext/services to the container.
