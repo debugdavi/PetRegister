@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.Json;
 using PetRegister.Domain.Entities;
 using PetRegister.Infrastructure.Repositories.Interfaces;
+using PetRegister.Infrastructure.Services;
 
 namespace PetRegister.API.Controllers
 {
@@ -11,9 +14,12 @@ namespace PetRegister.API.Controllers
     {
         private readonly IPetRepository _petRepository;
 
-        public PetController(IPetRepository petRepository)
+        private readonly ICachingService _cache;
+
+        public PetController(ICachingService cache, IPetRepository petRepository)
         {
             _petRepository = petRepository;
+            _cache = cache;
         }
 
         [HttpGet]
@@ -26,10 +32,22 @@ namespace PetRegister.API.Controllers
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<Pet>> GetById(Guid id)
         {
-            var pet = await _petRepository.ObterPorId(id);
+            var petCache = await _cache.GetAsync(id.ToString());
+            Pet? pet;
+
+            if (!string.IsNullOrWhiteSpace(petCache))
+            {
+                pet = JsonSerializer.Deserialize<Pet>(petCache);
+                Response.Headers.Add("X-Cache-Status", "Hit");
+                return Ok(pet);
+            }
+
+            pet = await _petRepository.ObterPorId(id);
         
             if (pet == null)
                 return NotFound(new { message = "Pet não encontrado." });
+            
+            await _cache.SetAsync(pet.Id.ToString(), JsonSerializer.Serialize(petCache));
 
             return Ok(pet);
         }
