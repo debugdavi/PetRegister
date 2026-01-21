@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PetRegister.Infrastructure.Caching;
 using PetRegister.Infrastructure.Context;
 using PetRegister.Infrastructure.Repositories;
 using PetRegister.Infrastructure.Repositories.Interfaces;
+using PetRegister.Infrastructure.Services;
 
 namespace PetRegister.Infrastructure
 {
@@ -35,13 +37,18 @@ namespace PetRegister.Infrastructure
                 options.UseNpgsql(connectionString);
             });
 
-            // 2. Aqui você vai registrar os Repositories futuramente
-            // Exemplo:
+            // 2. Registra os Repositories
             services.AddScoped<IPetRepository, PetRepository>();
 
-            // 3. Aqui você vai registrar outros serviços da infra
-            // Exemplo:
-            // services.AddScoped<ICacheService, RedisCacheService>();
+            // 3. Registra o Redis Cache
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = configuration["Redis:Configuration"];
+                options.InstanceName = configuration["Redis:InstanceName"];
+            });
+
+            // 4. Registra o serviço de caching
+            services.AddScoped<ICachingService, CachingService>();
 
             return services;
         }
